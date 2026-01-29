@@ -25,7 +25,19 @@ function Login({ onLogin }) {
             onLogin(token);
         } catch (err) {
             console.error(err);
-            setError("Invalid credentials. Please try again.");
+            let errorMessage = "Invalid credentials. Please try again.";
+            if (err.response) {
+                if (err.response.status === 401) {
+                    errorMessage = "Invalid username or password.";
+                } else if (err.response.data && typeof err.response.data === 'string') {
+                    errorMessage = err.response.data;
+                }
+            } else if (err.request) {
+                errorMessage = "Cannot reach the server. Is the backend running?";
+            } else {
+                errorMessage = err.message;
+            }
+            setError(errorMessage);
         } finally {
             setIsLoading(false);
         }
