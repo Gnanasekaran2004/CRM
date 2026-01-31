@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../ui/Button';
 import Input from '../ui/Input';
+import SpotlightCard from '../ui/SpotlightCard';
 import Modal from '../ui/Modal';
 import './CustomerList.css';
 
@@ -9,10 +10,10 @@ const CustomerList = ({ customers, onDelete }) => {
     const [emailFilter, setEmailFilter] = useState('');
     const [phoneFilter, setPhoneFilter] = useState('');
 
-    
+
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [customerToDelete, setCustomerToDelete] = useState(null);
-    
+
     const [exitingIds, setExitingIds] = useState([]);
 
     const handleDeleteClick = (id) => {
@@ -22,7 +23,7 @@ const CustomerList = ({ customers, onDelete }) => {
 
     const confirmDelete = () => {
         if (customerToDelete) {
-            
+
             setExitingIds(prev => [...prev, customerToDelete]);
 
             setShowDeleteModal(false);
@@ -43,14 +44,14 @@ const CustomerList = ({ customers, onDelete }) => {
         const matchesEmail = customer.email.toLowerCase().includes(emailFilter.toLowerCase());
         const matchesPhone = customer.phone ? customer.phone.includes(phoneFilter) : false;
 
-      
+
         if (!emailFilter && !phoneFilter) return true;
         if (emailFilter && !phoneFilter) return matchesEmail;
         if (!emailFilter && phoneFilter) return matchesPhone;
         return matchesEmail && matchesPhone;
     }).filter(c => !exitingIds.includes(c.id));
     return (
-        <div className="list-container">
+        <SpotlightCard className="list-container p-0" spotlightColor="rgba(255, 255, 255, 0.1)">
             <div className="list-header">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     <h3>Customer List</h3>
@@ -155,7 +156,7 @@ const CustomerList = ({ customers, onDelete }) => {
             >
                 <p>Are you sure you want to delete this customer?</p>
             </Modal>
-        </div>
+        </SpotlightCard>
     );
 };
 

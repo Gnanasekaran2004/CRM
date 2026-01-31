@@ -8,6 +8,8 @@ import About from './pages/About';
 import Contact from './pages/Contact';
 import Login from './Login';
 import Register from './Register';
+
+import { ThemeProvider } from './contexts/ThemeContext';
 import './App.css';
 
 function App() {
@@ -42,15 +44,18 @@ function App() {
 
   const handleLogout = () => {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('username');
     setAuthToken(null);
   };
 
   if (!authToken) {
     return (
-      <Routes>
-        <Route path="/register" element={<Register />} />
-        <Route path="*" element={<Login onLogin={handleLogin} />} />
-      </Routes>
+      <ThemeProvider>
+        <Routes>
+          <Route path="/register" element={<Register />} />
+          <Route path="*" element={<Login onLogin={handleLogin} />} />
+        </Routes>
+      </ThemeProvider>
     );
   }
 
@@ -59,22 +64,24 @@ function App() {
   };
 
   return (
-    <div className="app-layout">
-      <Navbar onLogout={handleLogout} />
-      <main className="main-content">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/customers" element={<AllCustomers />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
-      </main>
-      <footer className="app-footer">
-        <div className="container">
-          <p>&copy; {new Date().getFullYear()} SparkCRM. All rights reserved.</p>
-        </div>
-      </footer>
-    </div>
+    <ThemeProvider>
+      <div className="app-layout dark:bg-gray-900 dark:text-white transition-colors duration-200">
+        <Navbar onLogout={handleLogout} />
+        <main className="main-content">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/customers" element={<AllCustomers />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
+        </main>
+        <footer className="app-footer dark:bg-gray-800 dark:border-t dark:border-gray-700">
+          <div className="container">
+            <p>&copy; {new Date().getFullYear()} SparkCRM. All rights reserved.</p>
+          </div>
+        </footer>
+      </div>
+    </ThemeProvider>
   );
 }
 

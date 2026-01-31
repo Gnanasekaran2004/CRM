@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CustomerForm from '../components/features/CustomerForm';
 import CustomerList from '../components/features/CustomerList';
+import SpotlightCard from '../components/ui/SpotlightCard';
 import { motion } from 'framer-motion';
 
 const Home = () => {
@@ -64,6 +65,23 @@ const Home = () => {
             .catch(error => console.error("Error deleting customer:", error));
     };
 
+    const getUsername = () => {
+        const storedName = localStorage.getItem('username');
+        if (storedName) return storedName;
+
+        // Fallback: Try to decode from Basic Auth token
+        const token = localStorage.getItem('authToken');
+        if (token && token.startsWith('Basic ')) {
+            try {
+                const decoded = atob(token.split(' ')[1]);
+                return decoded.split(':')[0];
+            } catch (e) {
+                console.error("Failed to decode token", e);
+            }
+        }
+        return 'User';
+    };
+
     return (
         <motion.div
             initial={{ opacity: 0 }}
@@ -74,7 +92,7 @@ const Home = () => {
         >
             <div style={{ marginBottom: '2.5rem' }}>
                 <h1 style={{ fontSize: '1.875rem', marginBottom: '0.5rem' }}>Dashboard</h1>
-                <p style={{ color: 'var(--text-secondary)' }}>Welcome back, here's what's happening today.</p>
+                <p style={{ color: 'var(--text-secondary)' }}>Welcome back, {getUsername()}</p>
             </div>
 
             <div style={{
@@ -83,18 +101,18 @@ const Home = () => {
                 gap: '1.5rem',
                 marginBottom: '2.5rem'
             }}>
-                <div className="glass-panel" style={{ padding: '1.5rem', borderRadius: 'var(--radius-lg)', backgroundColor: 'white' }}>
+                <SpotlightCard spotlightColor="rgba(79, 70, 229, 0.2)">
                     <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Total Customers</p>
                     <h3 style={{ fontSize: '2rem', color: 'var(--primary-600)' }}>{stats.total}</h3>
-                </div>
-                <div className="glass-panel" style={{ padding: '1.5rem', borderRadius: 'var(--radius-lg)', backgroundColor: 'white' }}>
+                </SpotlightCard>
+                <SpotlightCard spotlightColor="rgba(16, 185, 129, 0.2)">
                     <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>New This Week</p>
                     <h3 style={{ fontSize: '2rem', color: 'var(--accent-600)' }}>+{stats.newThisWeek}</h3>
-                </div>
-                <div className="glass-panel" style={{ padding: '1.5rem', borderRadius: 'var(--radius-lg)', backgroundColor: 'white' }}>
+                </SpotlightCard>
+                <SpotlightCard spotlightColor="rgba(245, 158, 11, 0.2)">
                     <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Pending Actions</p>
                     <h3 style={{ fontSize: '2rem', color: 'var(--warning-500)' }}>0</h3>
-                </div>
+                </SpotlightCard>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(0, 1fr)', gap: '2rem', alignItems: 'start' }}>

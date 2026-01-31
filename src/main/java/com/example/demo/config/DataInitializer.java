@@ -22,7 +22,6 @@ public class DataInitializer {
             userRepository.save(admin);
             System.out.println("Admin user initialized: admin / password123");
 
-            
             if (userRepository.findByUsername("gs").isEmpty()) {
                 User gsUser = new User();
                 gsUser.setUsername("gs");

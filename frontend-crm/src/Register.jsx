@@ -3,6 +3,7 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 import Button from './components/ui/Button';
 import Input from './components/ui/Input';
+import SpotlightCard from './components/ui/SpotlightCard';
 import { Link } from 'react-router-dom';
 
 function Register({ onRegister }) {
@@ -48,119 +49,103 @@ function Register({ onRegister }) {
     };
 
     return (
-        <div style={{
-            minHeight: '100vh',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            background: 'linear-gradient(135deg, var(--primary-100) 0%, var(--primary-50) 100%)',
-            position: 'relative',
-            overflow: 'hidden'
-        }}>
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 overflow-hidden relative">
 
-            <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-                className="glass-panel"
-                style={{
-                    width: '100%',
-                    maxWidth: '400px',
-                    padding: '2.5rem',
-                    borderRadius: 'var(--radius-xl)',
-                    position: 'relative',
-                    zIndex: 1,
-                    boxShadow: 'var(--shadow-xl)'
-                }}
-            >
-                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                    <h1 style={{ fontSize: '1.75rem', marginBottom: '0.5rem', className: 'text-gradient' }}>Create Account</h1>
-                    <p style={{ color: 'var(--text-secondary)' }}>Sign up to get started</p>
-                </div>
+            <SpotlightCard className="w-full max-w-[400px] z-10 shadow-xl" spotlightColor="rgba(99, 102, 241, 0.25)">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                >
+                    <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                        <h1 style={{ fontSize: '1.75rem', marginBottom: '0.5rem', className: 'text-gradient' }}>Create Account</h1>
+                        <p style={{ color: 'var(--text-secondary)' }}>Sign up to get started</p>
+                    </div>
 
-                {error && (
-                    <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        style={{
-                            backgroundColor: '#FEF2F2',
-                            color: '#DC2626',
-                            padding: '0.75rem',
-                            borderRadius: 'var(--radius-md)',
-                            marginBottom: '1.5rem',
-                            fontSize: '0.875rem',
-                            border: '1px solid #FCA5A5'
-                        }}
-                    >
-                        {error}
-                    </motion.div>
-                )}
+                    {error && (
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            style={{
+                                backgroundColor: '#FEF2F2',
+                                color: '#DC2626',
+                                padding: '0.75rem',
+                                borderRadius: 'var(--radius-md)',
+                                marginBottom: '1.5rem',
+                                fontSize: '0.875rem',
+                                border: '1px solid #FCA5A5'
+                            }}
+                        >
+                            {error}
+                        </motion.div>
+                    )}
 
-                {success && (
-                    <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        style={{
-                            backgroundColor: '#ECFDF5',
-                            color: '#059669',
-                            padding: '0.75rem',
-                            borderRadius: 'var(--radius-md)',
-                            marginBottom: '1.5rem',
-                            fontSize: '0.875rem',
-                            border: '1px solid #6EE7B7'
-                        }}
-                    >
-                        {success}
-                        <div style={{ marginTop: '0.5rem' }}>
-                            <Link to="/" style={{ fontWeight: '600', textDecoration: 'underline' }}>Go to Login</Link>
-                        </div>
-                    </motion.div>
-                )}
+                    {success && (
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            style={{
+                                backgroundColor: '#ECFDF5',
+                                color: '#059669',
+                                padding: '0.75rem',
+                                borderRadius: 'var(--radius-md)',
+                                marginBottom: '1.5rem',
+                                fontSize: '0.875rem',
+                                border: '1px solid #6EE7B7'
+                            }}
+                        >
+                            {success}
+                            <div style={{ marginTop: '0.5rem' }}>
+                                <Link to="/" style={{ fontWeight: '600', textDecoration: 'underline' }}>Go to Login</Link>
+                            </div>
+                        </motion.div>
+                    )}
 
-                {!success && (
-                    <form onSubmit={handleSubmit}>
-                        <Input
-                            label="Username"
-                            placeholder="Choose a username"
-                            value={username}
-                            onChange={e => setUsername(e.target.value)}
-                            required
-                        />
-                        <Input
-                            label="Password"
-                            type="password"
-                            placeholder="••••••••"
-                            value={password}
-                            onChange={e => setPassword(e.target.value)}
-                            required
-                        />
-                        <Input
-                            label="Confirm Password"
-                            type="password"
-                            placeholder="••••••••"
-                            value={confirmPassword}
-                            onChange={e => setConfirmPassword(e.target.value)}
-                            required
-                        />
+                    {!success && (
+                        <form onSubmit={handleSubmit}>
+                            <Input
+                                label="Username"
+                                placeholder="Choose a username"
+                                value={username}
+                                onChange={e => setUsername(e.target.value)}
+                                required
+                            />
+                            <Input
+                                label="Password"
+                                type="password"
+                                placeholder="••••••••"
+                                value={password}
+                                onChange={e => setPassword(e.target.value)}
+                                required
+                            />
+                            <Input
+                                label="Confirm Password"
+                                type="password"
+                                placeholder="••••••••"
+                                value={confirmPassword}
+                                onChange={e => setConfirmPassword(e.target.value)}
+                                required
+                            />
 
-                        <div style={{ marginTop: '2rem' }}>
-                            <Button
-                                type="submit"
-                                variant="primary"
-                                fullWidth
-                                size="lg"
-                                disabled={isLoading}
-                            >
-                                {isLoading ? 'Creating Account...' : 'Sign Up'}
-                            </Button>
-                        </div>
-                    </form>
-                )}
+                            <div style={{ marginTop: '2rem' }}>
+                                <Button
+                                    type="submit"
+                                    variant="primary"
+                                    fullWidth
+                                    size="lg"
+                                    disabled={isLoading}
+                                >
+                                    {isLoading ? 'Creating Account...' : 'Sign Up'}
+                                </Button>
+                            </div>
+                        </form>
+                    )}
 
-                <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
-                    <span>Already have an account? <Link to="/" style={{ color: 'var(--primary-600)', fontWeight: '600' }}>Log In</Link></span>
-                </div>
-            </motion.div>
+                    <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
+                        <span>Already have an account? <Link to="/" style={{ color: 'var(--primary-600)', fontWeight: '600' }}>Log In</Link></span>
+                    </div>
+                </motion.div>
+            </SpotlightCard>
         </div>
     );
 }
