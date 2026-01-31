@@ -6,6 +6,7 @@ import Input from './components/ui/Input';
 import SpotlightCard from './components/ui/SpotlightCard';
 import { Link } from 'react-router-dom';
 import { useTheme } from './contexts/ThemeContext';
+import API_URL from './config';
 
 function Login({ onLogin }) {
     const [username, setUsername] = useState('');
@@ -23,7 +24,7 @@ function Login({ onLogin }) {
         const token = 'Basic ' + window.btoa(username + ":" + password);
 
         try {
-            const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8081';
+            const apiUrl = API_URL;
             await axios.get(`${apiUrl}/api/auth/me`, {
                 headers: { 'Authorization': token }
             });

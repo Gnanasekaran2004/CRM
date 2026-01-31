@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CustomerList from '../components/features/CustomerList';
 import { motion } from 'framer-motion';
+import API_URL from '../config';
 
 const AllCustomers = () => {
     const [customers, setCustomers] = useState([]);
 
-    const apiBaseUrl = "http://localhost:8081/api/customers";
+    const apiBaseUrl = `${API_URL}/api/customers`;
 
 
     const authToken = localStorage.getItem('authToken');

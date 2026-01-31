@@ -6,6 +6,8 @@ import Input from './components/ui/Input';
 import SpotlightCard from './components/ui/SpotlightCard';
 import { Link } from 'react-router-dom';
 
+import API_URL from './config';
+
 function Register({ onRegister }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -27,7 +29,7 @@ function Register({ onRegister }) {
         setIsLoading(true);
 
         try {
-            await axios.post('http://localhost:8081/api/auth/register', {
+            await axios.post(`${API_URL}/api/auth/register`, {
                 username,
                 password,
                 roles: 'USER'

@@ -4,6 +4,7 @@ import CustomerForm from '../components/features/CustomerForm';
 import CustomerList from '../components/features/CustomerList';
 import SpotlightCard from '../components/ui/SpotlightCard';
 import { motion } from 'framer-motion';
+import API_URL from '../config';
 
 const Home = () => {
     const [recentCustomers, setRecentCustomers] = useState([]);
@@ -15,7 +16,7 @@ const Home = () => {
         company: ''
     });
 
-    const apiBaseUrl = "http://localhost:8081/api/customers";
+    const apiBaseUrl = `${API_URL}/api/customers`;
 
     const authToken = localStorage.getItem('authToken');
     const getHeaders = () => {

@@ -11,6 +11,7 @@ import Register from './Register';
 
 import { ThemeProvider } from './contexts/ThemeContext';
 import './App.css';
+import API_URL from './config';
 
 function App() {
   const [authToken, setAuthToken] = useState(localStorage.getItem('authToken'));
@@ -21,7 +22,7 @@ function App() {
     if (token) {
       setAuthToken(token);
 
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8081';
+      const apiUrl = API_URL;
       axios.get(`${apiUrl}/api/auth/me`, {
         headers: { 'Authorization': token }
       })
