@@ -57,13 +57,11 @@ const Home = () => {
     };
 
     const handleDelete = (id) => {
-        if (window.confirm('Delete this customer?')) {
-            axios.delete(`${apiBaseUrl}/${id}`, getHeaders())
-                .then(() => {
-                    fetchRecentCustomers();
-                })
-                .catch(error => console.error("Error deleting customer:", error));
-        }
+        axios.delete(`${apiBaseUrl}/${id}`, getHeaders())
+            .then(() => {
+                fetchRecentCustomers();
+            })
+            .catch(error => console.error("Error deleting customer:", error));
     };
 
     return (
@@ -100,7 +98,7 @@ const Home = () => {
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(0, 1fr)', gap: '2rem', alignItems: 'start' }}>
-                
+
                 <div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                         <h2 style={{ fontSize: '1.25rem' }}>Recent Activity</h2>
@@ -111,7 +109,7 @@ const Home = () => {
                     />
                 </div>
 
-                
+
                 <div style={{ position: 'sticky', top: '5rem' }}>
                     <CustomerForm
                         formData={formData}

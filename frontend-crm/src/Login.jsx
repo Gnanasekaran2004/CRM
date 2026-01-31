@@ -143,13 +143,13 @@ function Login({ onLogin }) {
                             size="lg"
                             disabled={isLoading}
                         >
-                            {isLoading ? 'Signing in...' : 'Sign In'}
+                            {isLoading ? 'Logging in...' : 'Log In'}
                         </Button>
                     </div>
                 </form>
 
                 <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.875rem', color: 'var(--text-secondary)' }}>
-                    <span style={{ opacity: 0.7, display: 'block', marginBottom: '0.5rem' }}>Demo: admin / password123</span>
+                    {/* <span style={{ opacity: 0.7, display: 'block', marginBottom: '0.5rem' }}></span> */}
                     <span>Don't have an account? <Link to="/register" style={{ color: 'var(--primary-600)', fontWeight: '600' }}>Sign Up</Link></span>
                 </div>
             </motion.div>

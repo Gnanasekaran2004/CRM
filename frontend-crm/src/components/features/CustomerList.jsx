@@ -1,14 +1,74 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../ui/Button';
+import Input from '../ui/Input';
+import Modal from '../ui/Modal';
 import './CustomerList.css';
 
 const CustomerList = ({ customers, onDelete }) => {
+    const [emailFilter, setEmailFilter] = useState('');
+    const [phoneFilter, setPhoneFilter] = useState('');
+
+    
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [customerToDelete, setCustomerToDelete] = useState(null);
+    
+    const [exitingIds, setExitingIds] = useState([]);
+
+    const handleDeleteClick = (id) => {
+        setCustomerToDelete(id);
+        setShowDeleteModal(true);
+    };
+
+    const confirmDelete = () => {
+        if (customerToDelete) {
+            
+            setExitingIds(prev => [...prev, customerToDelete]);
+
+            setShowDeleteModal(false);
+            setCustomerToDelete(null);
+
+            setTimeout(() => {
+                onDelete(customerToDelete);
+            }, 500);
+        }
+    };
+
+    const handleCloseModal = () => {
+        setShowDeleteModal(false);
+        setCustomerToDelete(null);
+    };
+
+    const filteredCustomers = customers.filter(customer => {
+        const matchesEmail = customer.email.toLowerCase().includes(emailFilter.toLowerCase());
+        const matchesPhone = customer.phone ? customer.phone.includes(phoneFilter) : false;
+
+      
+        if (!emailFilter && !phoneFilter) return true;
+        if (emailFilter && !phoneFilter) return matchesEmail;
+        if (!emailFilter && phoneFilter) return matchesPhone;
+        return matchesEmail && matchesPhone;
+    }).filter(c => !exitingIds.includes(c.id));
     return (
         <div className="list-container">
             <div className="list-header">
-                <h3>Customer List</h3>
-                <span className="badge">{customers.length} total</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <h3>Customer List</h3>
+                    <span className="badge">{filteredCustomers.length} found</span>
+                </div>
+
+                <div className="filter-bar">
+                    <Input
+                        placeholder="Filter by Email"
+                        value={emailFilter}
+                        onChange={(e) => setEmailFilter(e.target.value)}
+                    />
+                    <Input
+                        placeholder="Search Phone"
+                        value={phoneFilter}
+                        onChange={(e) => setPhoneFilter(e.target.value)}
+                    />
+                </div>
             </div>
 
             <div className="table-wrapper">
@@ -26,13 +86,17 @@ const CustomerList = ({ customers, onDelete }) => {
                     </thead>
                     <tbody>
                         <AnimatePresence>
-                            {customers.length > 0 ? (
-                                customers.map((customer, index) => (
+                            {filteredCustomers.length > 0 ? (
+                                filteredCustomers.map((customer, index) => (
                                     <motion.tr
                                         key={customer.id}
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, x: -10 }}
+                                        exit={{
+                                            opacity: 0,
+                                            clipPath: "inset(0 100% 0 0)",
+                                            transition: { duration: 0.4, ease: "easeInOut" }
+                                        }}
                                         transition={{ duration: 0.2, delay: index * 0.05 }}
                                     >
                                         <td className="id-cell">#{customer.id}</td>
@@ -54,7 +118,7 @@ const CustomerList = ({ customers, onDelete }) => {
                                         <td className="text-right">
                                             <Button
                                                 variant="danger"
-                                                onClick={() => onDelete(customer.id)}
+                                                onClick={() => handleDeleteClick(customer.id)}
                                                 className="btn-sm"
                                             >
                                                 Delete
@@ -73,6 +137,24 @@ const CustomerList = ({ customers, onDelete }) => {
                     </tbody>
                 </table>
             </div>
+
+            <Modal
+                show={showDeleteModal}
+                onHide={handleCloseModal}
+                title="Confirm Deletion"
+                footer={
+                    <>
+                        <Button variant="secondary" onClick={handleCloseModal}>
+                            Cancel
+                        </Button>
+                        <Button variant="danger" onClick={confirmDelete}>
+                            Delete
+                        </Button>
+                    </>
+                }
+            >
+                <p>Are you sure you want to delete this customer?</p>
+            </Modal>
         </div>
     );
 };

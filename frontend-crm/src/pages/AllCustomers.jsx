@@ -8,7 +8,7 @@ const AllCustomers = () => {
 
     const apiBaseUrl = "http://localhost:8081/api/customers";
 
-    
+
     const authToken = localStorage.getItem('authToken');
 
     const getHeaders = () => {
@@ -27,13 +27,11 @@ const AllCustomers = () => {
     }, [authToken]);
 
     const handleDelete = (id) => {
-        if (window.confirm('Are you sure you want to delete this customer?')) {
-            axios.delete(`${apiBaseUrl}/${id}`, getHeaders())
-                .then(() => {
-                    setCustomers(customers.filter(c => c.id !== id));
-                })
-                .catch(error => console.error("Error deleting customer:", error));
-        }
+        axios.delete(`${apiBaseUrl}/${id}`, getHeaders())
+            .then(() => {
+                setCustomers(customers.filter(c => c.id !== id));
+            })
+            .catch(error => console.error("Error deleting customer:", error));
     };
 
     return (
